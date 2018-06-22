@@ -4,5 +4,15 @@
   "description": "Open network of nodes with a database of URLs to content associated with a set of conditions (license, cost, location...) to organise their consumption and sharing.",
   "main": "src/index.js",
   "author": "David Brown",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "micro-dev",
+    "start": "micro"
+  },
+  "dependencies": {
+    "micro": "^9.3.2"
+  },
+  "devDependencies": {
+    "micro-dev": "^3.0.0"
+  }
 }
