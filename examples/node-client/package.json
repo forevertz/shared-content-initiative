@@ -1,0 +1,13 @@
+{
+  "name": "node-client",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "ecdsa-secp256r1": "*",
+    "node-fetch": "*"
+  }
+}
