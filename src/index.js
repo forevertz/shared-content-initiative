@@ -1,7 +1,11 @@
 const ECDSA = require('ecdsa-secp256r1')
-const { send, text } = require('micro')
+const micro = require('micro')
 
 const packageInfo = require('../package.json')
+const { PORT } = require('./config')
+const { connectPeers } = require('./peers')
+
+const { send, text } = micro
 
 const endpoints = {
   MAX_CONTENT_LENGTH: 500,
@@ -12,6 +16,10 @@ const endpoints = {
         const { name, version, description, repository, license } = packageInfo
         return { name, version, description, repository, license, endpoints }
       }
+    },
+    '/whatsmyip': {
+      description: 'Get my IP',
+      call: require('./endpoint/get-whatsmyip')
     }
   },
   POST: {
@@ -76,10 +84,14 @@ async function checkRequest (request, response) {
   return true
 }
 
-module.exports = async (request, response) => {
+const server = micro(async (request, response) => {
   response.setHeader('Access-Control-Allow-Origin', '*')
   request.pathname = request.url.split('?')[0]
   if (await checkRequest(request, response)) {
     return endpoints[request.method][request.pathname].call(request, response)
   }
-}
+})
+
+connectPeers(server)
+
+server.listen(PORT)

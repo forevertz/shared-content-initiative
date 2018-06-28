@@ -7,17 +7,22 @@
   "license": "MIT",
   "repository": "https://github.com/ztrev/shared-content-initiative.git",
   "scripts": {
-    "dev": "docker-compose -f docker-compose.dev.yml up -d && micro-dev",
-    "start": "micro"
+    "dev": "docker-compose -f docker-compose.dev.yml up -d && PORT=3000 nodemon src/index.js",
+    "dev2": "PORT=4000 nodemon src/index.js",
+    "start": "NODE_ENV=production PORT=${PORT-5423} node src/index.js"
   },
   "dependencies": {
     "ecdsa-secp256r1": "^1.0.1",
     "elasticsearch": "^15.0.0",
-    "micro": "^9.3.2"
+    "ip": "^1.1.5",
+    "micro": "^9.3.2",
+    "node-fetch": "^2.1.2",
+    "socket.io": "^2.1.1",
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
     "eslint-config-standard": "^11.0.0",
-    "micro-dev": "^3.0.0",
+    "nodemon": "^1.17.5",
     "prettier": "^1.13.5",
     "standard": "^11.0.1"
   }

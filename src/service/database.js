@@ -1,6 +1,10 @@
 const elasticsearch = require('elasticsearch')
 
-const client = new elasticsearch.Client({ host: 'localhost:9200', log: 'trace' })
+const { DATABASE_HOST } = require('../config')
+
+const client = new elasticsearch.Client({
+  host: DATABASE_HOST
+})
 
 function Model (index, properties) {
   const type = '_doc'
@@ -12,8 +16,10 @@ function Model (index, properties) {
   })
 
   return {
-    create: data => {
-      return client.index({ index, type, body: data })
+    create: ({ _id, ...data }) => {
+      return _id
+        ? client.create({ index, type, id: _id, body: data })
+        : client.index({ index, type, body: data }) // Auto-generates the id
     }
   }
 }

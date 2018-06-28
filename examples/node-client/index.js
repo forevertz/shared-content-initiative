@@ -1,7 +1,7 @@
 const ECDSA = require('ecdsa-secp256r1')
 const fetch = require('node-fetch')
 
-const host = 'http://localhost:3000'
+const host = process.env.HOST || 'localhost:3000'
 const privateKey = ECDSA.generateKey()
 const publicKey = privateKey.toCompressedPublicKey()
 
@@ -13,7 +13,7 @@ const headers = {
   'X-Public-Key': publicKey,
   'X-Signature': signature
 }
-fetch(`${host}/share`, { method: 'POST', body: JSON.stringify(message), headers })
+fetch(`http://${host}/share`, { method: 'POST', body: JSON.stringify(message), headers })
   .then(res => res.json())
   .then(console.log)
   .catch(console.error)
