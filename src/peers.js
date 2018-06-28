@@ -6,6 +6,10 @@ const Shared = require('./model/shared')
 const initialPeerList = require('./peer-list')
 const { whatsMyIp, isExternalIp } = require('./service/ip')
 
+const HOUR = 60 * 60
+const MAX_HISTORY_HOUR = 24 * HOUR
+const MAX_HISTORY_NUMBER = 10000
+
 const peerList = IS_PROD ? initialPeerList : ['localhost:3000', 'localhost:4000']
 
 async function selectPeer (peers) {
@@ -31,9 +35,20 @@ let io
 function listenToPeers (server) {
   io = ioServer(server, { serveClient: false, cookie: false })
   io.of('/sender-stream').on('connection', socket => {
-    socket.on('get shared history', respond => {
-      // TODO: send history from given date
-      respond('here is the history from ' + HOST)
+    socket.on('get shared history', async ({ from }, respond) => {
+      try {
+        const history = (await Shared.find({
+          query: {
+            bool: {
+              filter: { range: { created: { gte: Math.max(from || 0, MAX_HISTORY_HOUR) } } }
+            }
+          },
+          size: MAX_HISTORY_NUMBER
+        })).hits
+        respond(history.map(({ _id, _source }) => ({ _id, ..._source })))
+      } catch (error) {
+        respond([])
+      }
     })
   })
   io.of('/receiver-stream').on('connection', socket => {
@@ -57,8 +72,13 @@ async function connectToUpAndDownStreams () {
       upstream.socket.on('share content', data => {
         receiveSharedContent(data, io.of('sender-stream'))
       })
-      // TODO: get history from last received shared content
-      upstream.socket.emit('get shared history', console.log) // XXX
+      const latestShared = await Shared.findLatest()
+      const from = latestShared ? latestShared.created : null
+      upstream.socket.emit('get shared history', { from }, async data => {
+        for (const sharedContent of data) {
+          await receiveSharedContent(sharedContent, false, { createdTooOld: MAX_HISTORY_HOUR })
+        }
+      })
     }
   }
   if (!downstream.socket) {
@@ -80,12 +100,12 @@ function emitSharedContent (data) {
   io.of('sender-stream').emit('share content', data)
 }
 
-async function receiveSharedContent (data, socket) {
-  const formErrors = Shared.isValid(data)
+async function receiveSharedContent (data, socket = false, validateOptions = {}) {
+  const formErrors = Shared.isValid(data, validateOptions)
   if (data._id && formErrors.length === 0) {
     try {
       await Shared.create(data)
-      socket.emit('share content', data)
+      if (socket) socket.emit('share content', data)
     } catch (error) {
       // Already in database: catch silently
     }

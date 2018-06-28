@@ -5,10 +5,10 @@ const Shared = new Model('shared', {
   url: { type: 'text' },
   format: { type: 'keyword' }, // text | html | image | audio | video
   publicKey: { type: 'text' },
-  created: { type: 'date' }
+  created: { type: 'date', format: 'epoch_second' }
 })
 
-Shared.isValid = data => {
+Shared.isValid = (data, validateOptions = {}) => {
   const errors = []
   const { _id, url, format, created } = data
   // Authorized keys
@@ -32,13 +32,23 @@ Shared.isValid = data => {
   }
   // Created date format
   if (created) {
-    const diffInSeconds = (Date.now() - new Date(created)) / 1000
-    const MINUTE = 60
-    if (!diffInSeconds) errors.push('Invalid "created" date')
-    if (diffInSeconds > 2 * MINUTE) errors.push('"created" date is too old')
-    if (diffInSeconds < -MINUTE) errors.push('"created" date is in the future')
+    if (typeof created !== 'number') {
+      errors.push('Param "created" should be a number (timestamp in seconds)')
+    } else {
+      const MINUTE = 60
+      const { createdTooOld = 2 * MINUTE } = validateOptions
+      const diffInSeconds = Date.now() / 1000 - created
+      if (!diffInSeconds) errors.push('Invalid "created" date')
+      if (diffInSeconds > createdTooOld) errors.push('"created" date is too old')
+      if (diffInSeconds < -MINUTE) errors.push('"created" date is in the future')
+    }
   }
   return errors
+}
+
+Shared.findLatest = async () => {
+  const [latest] = (await Shared.find({ size: 1, sort: { created: 'desc' } })).hits
+  return latest ? latest._source : null
 }
 
 module.exports = Shared

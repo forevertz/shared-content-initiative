@@ -11,7 +11,7 @@ module.exports = async (request, response) => {
       const sharedData = {
         ...data,
         publicKey: request.headers['x-public-key'],
-        created: new Date().toISOString()
+        created: Math.floor(new Date().getTime() / 1000)
       }
       const { _id } = await Shared.create(sharedData)
       emitSharedContent({ _id, ...sharedData })

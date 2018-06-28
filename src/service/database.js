@@ -20,6 +20,9 @@ function Model (index, properties) {
       return _id
         ? client.create({ index, type, id: _id, body: data })
         : client.index({ index, type, body: data }) // Auto-generates the id
+    },
+    find: async (query = {}) => {
+      return (await client.search({ index, body: query })).hits
     }
   }
 }
