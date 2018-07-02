@@ -981,8 +981,8 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
 
 ecdsa-secp256r1@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/ecdsa-secp256r1/-/ecdsa-secp256r1-1.0.1.tgz#01ca37055b1b60efe9d194988c44345aa7b13348"
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ecdsa-secp256r1/-/ecdsa-secp256r1-1.2.1.tgz#6e5f7c95b75392d9bfe478a08b5b7569724cc0aa"
   dependencies:
     asn1.js "^5.0.1"
     bn.js "^4.11.8"
@@ -3129,8 +3129,8 @@ prepend-http@^1.0.1:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-1.0.4.tgz#d4f4562b0ce3696e41ac52d0e002e57a635dc6dc"
 
 prettier@^1.13.5:
-  version "1.13.5"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.5.tgz#7ae2076998c8edce79d63834e9b7b09fead6bfd0"
+  version "1.13.7"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-1.13.7.tgz#850f3b8af784a49a6ea2d2eaa7ed1428a34b7281"
 
 pretty-format@^23.2.0:
   version "23.2.0"

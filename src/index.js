@@ -64,10 +64,10 @@ async function checkRequest (request, response) {
     }
     try {
       const key = ECDSA.fromCompressedPublicKey(publicKey)
-      if (!key.verify(rawBody, signature)) {
+      if (!(await key.hashAndVerify(rawBody, signature))) {
         return send(response, 401, {
           success: false,
-          error: 'Header "X-Signature" does not match (public key, content)'
+          error: 'Header "X-Signature" does not verify (public key, BASE64(SHA256(content)))'
         })
       }
     } catch (error) {
@@ -83,9 +83,17 @@ async function checkRequest (request, response) {
 
 const server = micro(async (request, response) => {
   response.setHeader('Access-Control-Allow-Origin', '*')
-  request.pathname = request.url.split('?')[0]
-  if (await checkRequest(request, response)) {
-    return endpoints[request.method][request.pathname].call(request, response)
+  response.setHeader(
+    'Access-Control-Allow-Headers',
+    ['Content-Type', 'X-Public-Key', 'X-Signature'].join(', ')
+  )
+  if (request.method === 'OPTIONS') {
+    return ''
+  } else {
+    request.pathname = request.url.split('?')[0]
+    if (await checkRequest(request, response)) {
+      return endpoints[request.method][request.pathname].call(request, response)
+    }
   }
 })
 

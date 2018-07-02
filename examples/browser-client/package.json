@@ -1,0 +1,9 @@
+{
+  "name": "browser-client",
+  "version": "1.0.0",
+  "main": "index.html",
+  "license": "MIT",
+  "dependencies": {
+    "ecdsa-secp256r1": "^1.0.1"
+  }
+}

@@ -51,16 +51,18 @@ const message = {
     validUntil: Math.floor(Date.now() / 1000) + 72 * HOUR
   }
 }
-const signature = privateKey.sign(JSON.stringify(message))
+;(async function sendRequest () {
+  const signature = await privateKey.hashAndSign(message)
 
-const headers = {
-  'Content-Type': 'application/json',
-  'X-Public-Key': publicKey,
-  'X-Signature': signature
-}
-fetch(`http://${host}/share`, { method: 'POST', body: JSON.stringify(message), headers })
-  .then(res => res.json())
-  .then(console.log)
-  .catch(console.error)
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-Public-Key': publicKey,
+    'X-Signature': signature
+  }
+  fetch(`http://${host}/share`, { method: 'POST', body: JSON.stringify(message), headers })
+    .then(res => res.json())
+    .then(console.log)
+    .catch(console.error)
 
-console.log({ publicKey, message, signature })
+  console.log({ publicKey, message, signature })
+})()
