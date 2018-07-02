@@ -17,7 +17,7 @@ module.exports = async (request, response) => {
       emitSharedContent({ _id, ...sharedData })
       return { success: true, result: { _id } }
     } catch (error) {
-      return send(response, 500, { success: false, error: 'Unknown error' })
+      return send(response, 500, { success: false, error: error.message })
     }
   } else {
     send(response, 400, { success: false, error: 'Invalid data', errors: formErrors })

@@ -1,7 +1,7 @@
 const ioServer = require('socket.io')
 const ioClient = require('socket.io-client')
 
-const { IS_PROD, HOST } = require('./config')
+const { IS_PROD, HOST, MAX_CONTENT_LENGTH } = require('./config')
 const Shared = require('./model/shared')
 const initialPeerList = require('./peer-list')
 const { whatsMyIp, isExternalIp } = require('./service/ip')
@@ -100,14 +100,17 @@ function emitSharedContent (data) {
   io.of('sender-stream').emit('share content', data)
 }
 
-async function receiveSharedContent (data, socket = false, validateOptions = {}) {
-  const formErrors = Shared.isValid(data, validateOptions)
-  if (data._id && formErrors.length === 0) {
-    try {
-      await Shared.create(data)
-      if (socket) socket.emit('share content', data)
-    } catch (error) {
-      // Already in database: catch silently
+async function receiveSharedContent (data, socket, validateOptions = {}) {
+  const { _id, created, publicKey, ...rest } = data
+  if (_id && created && publicKey && JSON.stringify(rest).length <= MAX_CONTENT_LENGTH) {
+    const formErrors = Shared.isValid(data, validateOptions)
+    if (formErrors.length === 0) {
+      try {
+        await Shared.create(data)
+        if (socket) socket.emit('share content', data)
+      } catch (error) {
+        // Already in database: catch silently
+      }
     }
   }
 }
