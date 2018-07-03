@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Open network of nodes with a database of URLs to content associated with a set of conditions (license, cost, location...) to organise their consumption and sharing.",
   "main": "src/index.js",
-  "author": "David Brown",
+  "author": "Vertz Developers",
   "license": "MIT",
   "repository": "https://github.com/ztrev/shared-content-initiative.git",
   "scripts": {
