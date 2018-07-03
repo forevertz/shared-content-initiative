@@ -60,7 +60,7 @@ test('Complete share data should be valid', () => {
         copyright: '© 2024 - Me',
         price: {
           forConsumer: 0.05,
-          forConnector: -3,
+          forAgent: -3,
           currency: 'USD',
           details: { type: 'CPM', platform: 'adcompany' }
         },
@@ -369,17 +369,17 @@ test('conditions.price.forConsumer should be a number', () => {
   )
 })
 
-test('conditions.price.forConnector should be a number', () => {
-  const error = 'Parameter "conditions.price.forConnector" should be a number'
-  expect(Shared.isValid({ ...shared, conditions: { price: { forConnector: '' } } })).toEqual([
+test('conditions.price.forAgent should be a number', () => {
+  const error = 'Parameter "conditions.price.forAgent" should be a number'
+  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: '' } } })).toEqual([
     error
   ])
-  expect(Shared.isValid({ ...shared, conditions: { price: { forConnector: '24' } } })).toEqual([
+  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: '24' } } })).toEqual([
     error
   ])
   const validPrice = 3
   expect(
-    Shared.isValid({ ...shared, conditions: { price: { forConnector: validPrice } } })
+    Shared.isValid({ ...shared, conditions: { price: { forAgent: validPrice } } })
   ).toEqual([])
 })
 

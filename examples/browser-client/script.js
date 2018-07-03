@@ -43,7 +43,7 @@
       copyright: '© 2024 - Me',
       price: {
         forConsumer: 0.05,
-        forConnector: -3,
+        forAgent: -3,
         currency: 'USD',
         details: { type: 'CPM', platform: 'adcompany' }
       },

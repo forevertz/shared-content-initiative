@@ -46,14 +46,14 @@ const SharedModel = {
       price: {
         properties: {
           forConsumer: { type: 'float' }, // can be negative to pay consumers
-          forConnector: { type: 'float' }, // can be negative to pay connectors
+          forAgent: { type: 'float' }, // can be negative to pay agents
           currency: { type: 'keyword' }, // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217)
           details: {
             properties: {
               /*
                 (free model) used for details of the arrangment:
-                  - how to conclude the deal?
-                  - CPM, CPC, CPA...
+                  - platform: how to conclude the deal?
+                  - type: CPM, CPC, CPA...
                */
             }
           }
@@ -275,14 +275,14 @@ function validateConditionsPrice (price) {
   // Authorized keys
   const priceKeys = Object.keys(SharedModel.conditions.properties.price.properties)
   errors.push(...validateKeys(price, priceKeys, 'conditions.price.'))
-  const { forConsumer, forConnector, currency, details } = price
+  const { forConsumer, forAgent, currency, details } = price
   // forConsumer format
   if (forConsumer !== undefined && typeof forConsumer !== 'number') {
     errors.push('Parameter "conditions.price.forConsumer" should be a number')
   }
-  // forConnector format
-  if (forConnector !== undefined && typeof forConnector !== 'number') {
-    errors.push('Parameter "conditions.price.forConnector" should be a number')
+  // forAgent format
+  if (forAgent !== undefined && typeof forAgent !== 'number') {
+    errors.push('Parameter "conditions.price.forAgent" should be a number')
   }
   // currency format
   if (
