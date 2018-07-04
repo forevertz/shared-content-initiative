@@ -51,7 +51,7 @@ const SharedModel = {
           details: {
             properties: {
               /*
-                (free model) used for details of the arrangment:
+                (free model) used for details of the arrangement:
                   - platform: how to conclude the deal?
                   - type: CPM, CPC, CPA...
                */
