@@ -6,6 +6,15 @@ const client = new elasticsearch.Client({
   host: DATABASE_HOST
 })
 
+async function isDatabaseConnected () {
+  try {
+    await client.ping()
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
 function Model (index, properties) {
   const type = '_doc'
   client.indices.exists({ index }).then(async indexExists => {
@@ -27,4 +36,7 @@ function Model (index, properties) {
   }
 }
 
-module.exports = Model
+module.exports = {
+  Model,
+  isDatabaseConnected
+}

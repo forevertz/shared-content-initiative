@@ -1,6 +1,6 @@
 const mimeTypes = require('mime-db')
 
-const Model = require('../service/database')
+const { Model } = require('../service/database')
 const iso = require('../service/iso')
 
 // TODO: clean history periodically

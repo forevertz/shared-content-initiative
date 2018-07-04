@@ -17,6 +17,10 @@ const endpoints = {
         return { name, version, description, repository, license, endpoints }
       }
     },
+    '/is-up': {
+      description: 'Is the server up and running',
+      call: require('./endpoint/get-is-up')
+    },
     '/whatsmyip': {
       description: 'Get my IP',
       call: require('./endpoint/get-whatsmyip')
