@@ -2,7 +2,7 @@ const ECDSA = require('ecdsa-secp256r1')
 const fetch = require('node-fetch')
 
 const HOUR = 60 * 60
-const host = process.env.HOST || 'localhost:3000'
+const host = process.env.HOST || 'localhost:5423'
 const privateKey = ECDSA.generateKey()
 const publicKey = privateKey.toCompressedPublicKey()
 

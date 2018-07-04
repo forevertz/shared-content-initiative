@@ -2,7 +2,7 @@
 
 ;(async function () {
   const HOUR = 60 * 60
-  const host = 'localhost:3000'
+  const host = 'localhost:5423'
   const privateKey = await window.ECDSA.generateKey()
   const publicKey = await privateKey.toBase64CompressedPublicKey()
 

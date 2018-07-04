@@ -7,9 +7,9 @@
   "license": "MIT",
   "repository": "https://github.com/ztrev/shared-content-initiative.git",
   "scripts": {
-    "dev": "docker-compose -f docker-compose.dev.yml up -d && PORT=3000 nodemon src/index.js",
-    "dev2": "PORT=4000 nodemon src/index.js",
-    "start": "NODE_ENV=production PORT=${PORT-5423} node src/index.js",
+    "dev": "docker-compose -f docker-compose.dev.yml up -d && PORT=5423 nodemon src/index.js",
+    "dev2": "PORT=3000 nodemon src/index.js",
+    "start": "NODE_ENV=${NODE_ENV-production} PORT=${PORT-5423} node src/index.js",
     "test": "jest"
   },
   "dependencies": {

@@ -8,10 +8,14 @@ if (IS_PROD && !process.env.HOST) {
   throw new Error('HOST environment variable is required.')
 }
 
-module.exports = {
+const config = {
   IS_PROD,
   PORT,
   HOST,
   DATABASE_HOST,
   MAX_CONTENT_LENGTH
 }
+
+console.log('config', config)
+
+module.exports = config

@@ -10,7 +10,7 @@ const HOUR = 60 * 60
 const MAX_HISTORY_HOUR = 24 * HOUR
 const MAX_HISTORY_NUMBER = 10000
 
-const peerList = IS_PROD ? initialPeerList : ['localhost:3000', 'localhost:4000']
+const peerList = IS_PROD ? initialPeerList : ['localhost:5423', 'localhost:3000']
 
 async function selectPeer (peers) {
   const randomPeer = peers[Math.floor(Math.random() * peers.length)]
