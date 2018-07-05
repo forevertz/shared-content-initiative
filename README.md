@@ -50,7 +50,7 @@ Our first step is to help advertizers and publishers to get in touch in a more t
 
 ### What can I share?
 
-See [complete model](https://github.com/ztrev/shared-content-initiative/blob/master/src/model/shared.js).
+See [complete model](https://github.com/ztrev/shared-content-initiative/blob/master/src/model/shared.js#L12-L66).
 
 Examples:
 

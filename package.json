@@ -12,6 +12,9 @@
     "start": "NODE_ENV=${NODE_ENV-production} PORT=${PORT-5423} node src/index.js",
     "test": "jest"
   },
+  "files": [
+    "src"
+  ],
   "dependencies": {
     "currency-format": "^1.0.10",
     "ecdsa-secp256r1": "^1.0.1",
