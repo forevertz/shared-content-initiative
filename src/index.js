@@ -24,6 +24,10 @@ const endpoints = {
     '/whatsmyip': {
       description: 'Get my IP',
       call: require('./endpoint/get-whatsmyip')
+    },
+    '/share': {
+      description: 'Find shared content',
+      call: require('./endpoint/get-share')
     }
   },
   POST: {
