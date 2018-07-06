@@ -20,12 +20,16 @@ function Model (index, properties) {
   let indexExists
 
   async function createIndex () {
-    indexExists = await client.indices.exists({ index })
-    if (!indexExists) {
-      indexExists = true
-      await client.indices.create({ index })
+    try {
+      indexExists = await client.indices.exists({ index })
+      if (!indexExists) {
+        indexExists = true
+        await client.indices.create({ index })
+      }
+      client.indices.putMapping({ index, type, body: { properties } })
+    } catch (error) {
+      // Database is not connected yet
     }
-    client.indices.putMapping({ index, type, body: { properties } })
   }
   function verifyIndex () {
     if (!indexExists) createIndex()
