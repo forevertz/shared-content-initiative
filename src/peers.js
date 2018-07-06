@@ -4,6 +4,7 @@ const ioClient = require('socket.io-client')
 const { IS_PROD, HOSTNAME, PORT, MAX_CONTENT_LENGTH } = require('./config')
 const Shared = require('./model/shared')
 const initialPeerList = require('./peer-list')
+const { isDatabaseConnected } = require('./service/database')
 const { whatsMyIp, isExternalIp } = require('./service/ip')
 
 const HOST = `${HOSTNAME}:${PORT}`
@@ -62,7 +63,6 @@ const upstream = { socket: false } // listen to created shared content
 const downstream = { socket: false } // force one node to listen to my shared content
 
 async function connectToUpAndDownStreams () {
-  if (!IS_PROD) await sleep(500)
   if (!upstream.socket) {
     const randomPeer = await selectPeer(
       peerList.filter(host => ![HOST, downstream.host].includes(host))
@@ -117,7 +117,10 @@ async function receiveSharedContent (data, socket, validateOptions = {}) {
   }
 }
 
-function connectPeers (server) {
+async function connectPeers (server) {
+  while (!(await isDatabaseConnected())) {
+    await sleep(5000)
+  }
   listenToPeers(server)
   connectToUpAndDownStreams()
 }

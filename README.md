@@ -87,7 +87,20 @@ $ docker run -p 5423:5423 -e NODE_ENV=development -e discovery.type=single-node 
 - Data will be kept between restarts
 
 ```shell
-$ docker volume create shared-content-volume
+$ docker volume create --name shared-content-volume
 $ # Replace "localhost" by your external IP address or hostname and "5424" by your favorite port number
-$ docker run -p 5424:5423 -e HOSTNAME=localhost -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name shared-content-initiative --rm -d ztrev/shared-content-initiative
+$ docker run -p 5424:5423 -e HOSTNAME=localhost -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name shared-content-initiative -d ztrev/shared-content-initiative
+```
+
+or
+
+```shell
+$ git clone https://github.com/ztrev/shared-content-initiative.git
+$ cd shared-content-initiative
+$ docker volume create --name shared-content-volume
+$ docker run -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name elasticsearch -d docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+$ docker run -v `pwd`:/app -w /app --rm node:alpine yarn install --production
+$ # Wait for elasticsearch to run
+$ # Replace "localhost" by your external IP address or hostname and "5424" by your favorite port number
+$ docker run -p 5423:5423 -e HOSTNAME=localhost -e DATABASE_HOST=elasticsearch:9200 --link elasticsearch -v `pwd`:/app -w /app --name shared-content-initiative -d node:alpine yarn start
 ```
