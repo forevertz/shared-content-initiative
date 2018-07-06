@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:6.3.0
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - dataVolumeProd:/usr/share/elasticsearch/data
+
+  shared-conent-initiative:
+    image: node:10.6.0-alpine
+    ports:
+      - ${PORT-5423}:5423
+    environment:
+      - NODE_ENV=${NODE_ENV-production}
+      - HOST=${HOST-localhost:5423}
+      - PORT=5423
+      - DATABASE_HOST=elasticsearch:9200
+    links:
+      - elasticsearch
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: [ "yarn", "start" ]
+
+volumes:
+  dataVolumeProd: {}
