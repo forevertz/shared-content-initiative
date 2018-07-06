@@ -43,7 +43,8 @@ function listenToPeers (server) {
               filter: { range: { created: { gte: Math.max(from || 0, MAX_HISTORY_HOUR) } } }
             }
           },
-          size: MAX_HISTORY_NUMBER
+          size: MAX_HISTORY_NUMBER,
+          sort: [{ created: 'desc' }]
         })).hits
         respond(history.map(({ _id, _source }) => ({ _id, ..._source })))
       } catch (error) {

@@ -17,20 +17,32 @@ async function isDatabaseConnected () {
 
 function Model (index, properties) {
   const type = '_doc'
-  client.indices.exists({ index }).then(async indexExists => {
+  let indexExists
+
+  async function createIndex () {
+    indexExists = await client.indices.exists({ index })
     if (!indexExists) {
+      indexExists = true
       await client.indices.create({ index })
     }
     client.indices.putMapping({ index, type, body: { properties } })
-  })
+  }
+  function verifyIndex () {
+    if (!indexExists) createIndex()
+  }
+  isDatabaseConnected()
+    .then(createIndex)
+    .catch(() => {})
 
   return {
-    create: ({ _id, ...data }) => {
+    create: async ({ _id, ...data }) => {
+      await verifyIndex()
       return _id
         ? client.create({ index, type, id: _id, body: data })
         : client.index({ index, type, body: data }) // Auto-generates the id
     },
     find: async (query = {}) => {
+      await verifyIndex()
       return (await client.search({ index, body: query })).hits
     }
   }
