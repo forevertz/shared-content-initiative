@@ -14,7 +14,7 @@ services:
       - ${PORT-5423}:5423
     environment:
       - NODE_ENV=${NODE_ENV-production}
-      - HOST=${HOST-localhost:5423}
+      - HOSTNAME=${HOSTNAME-localhost}
       - PORT=5423
       - DATABASE_HOST=elasticsearch:9200
     links:

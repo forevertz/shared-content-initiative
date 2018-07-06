@@ -1,11 +1,12 @@
 const ioServer = require('socket.io')
 const ioClient = require('socket.io-client')
 
-const { IS_PROD, HOST, MAX_CONTENT_LENGTH } = require('./config')
+const { IS_PROD, HOSTNAME, PORT, MAX_CONTENT_LENGTH } = require('./config')
 const Shared = require('./model/shared')
 const initialPeerList = require('./peer-list')
 const { whatsMyIp, isExternalIp } = require('./service/ip')
 
+const HOST = `${HOSTNAME}:${PORT}`
 const HOUR = 60 * 60
 const MAX_HISTORY_HOUR = 24 * HOUR
 const MAX_HISTORY_NUMBER = 10000

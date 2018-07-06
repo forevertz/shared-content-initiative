@@ -89,5 +89,5 @@ $ docker run -p 5423:5423 -e NODE_ENV=development -e discovery.type=single-node 
 ```shell
 $ docker volume create shared-content-volume
 $ # Replace "localhost" by your external IP address or hostname and "5424" by your favorite port number
-$ docker run -p 5424:5423 -e HOST=localhost:5424 -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name shared-content-initiative --rm -d ztrev/shared-content-initiative
+$ docker run -p 5424:5423 -e HOSTNAME=localhost -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name shared-content-initiative --rm -d ztrev/shared-content-initiative
 ```
