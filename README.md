@@ -8,8 +8,8 @@ An initiative to allow `Sharers` to **share links to content** (articles, books,
 
 All that shared content is stored in a **decentralized open database** and anyone can run its node, **connected to the others**.
 
-<a href="https://github.com/ztrev/shared-content-initiative"><img alt="release" src="https://img.shields.io/github/release/ztrev/shared-content-initiative.svg?style=flat" /></a>
-<a href="https://github.com/ztrev/shared-content-initiative/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT_License-blue.svg?style=flat" /></a>
+<a href="https://github.com/forevertz/shared-content-initiative"><img alt="release" src="https://img.shields.io/github/release/forevertz/shared-content-initiative.svg?style=flat" /></a>
+<a href="https://github.com/forevertz/shared-content-initiative/blob/master/LICENSE"><img alt="license" src="https://img.shields.io/badge/license-MIT_License-blue.svg?style=flat" /></a>
 
 ## Why this project?
 
@@ -50,7 +50,7 @@ Our first step is to help advertizers and publishers to get in touch in a more t
 
 ### What can I share?
 
-See [complete model](https://github.com/ztrev/shared-content-initiative/blob/master/src/model/shared.js#L12-L66).
+See [complete model](https://github.com/forevertz/shared-content-initiative/blob/master/src/model/shared.js#L12-L66).
 
 Examples:
 
@@ -74,12 +74,12 @@ If you don't already have Docker, see https://docs.docker.com/install/ to instal
 1.  Run the node
 
 ```shell
-$ docker run -p 5423:5423 -e NODE_ENV=development -e discovery.type=single-node --rm -it ztrev/shared-content-initiative
+$ docker run -p 5423:5423 -e NODE_ENV=development -e discovery.type=single-node --rm -it forevertz/shared-content-initiative
 ```
 
 2.  Open `http://localhost:5423/is-up` to see if the server is running and if the database is connected (you should see `{"success":true,"isDatabaseConnected":true}`).
 
-3.  See [client examples](https://github.com/ztrev/shared-content-initiative/blob/master/examples) to see how to add shared content.
+3.  See [client examples](https://github.com/forevertz/shared-content-initiative/blob/master/examples) to see how to add shared content.
 
 ### In production
 
@@ -89,13 +89,13 @@ $ docker run -p 5423:5423 -e NODE_ENV=development -e discovery.type=single-node 
 ```shell
 $ docker volume create --name shared-content-volume
 $ # Replace "localhost" by your external IP address or hostname and "5424" by your favorite port number
-$ docker run -p 5424:5423 -e HOSTNAME=localhost -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name shared-content-initiative -d ztrev/shared-content-initiative
+$ docker run -p 5424:5423 -e HOSTNAME=localhost -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name shared-content-initiative -d forevertz/shared-content-initiative
 ```
 
 or
 
 ```shell
-$ git clone https://github.com/ztrev/shared-content-initiative.git
+$ git clone https://github.com/forevertz/shared-content-initiative.git
 $ cd shared-content-initiative
 $ docker volume create --name shared-content-volume
 $ docker run -e discovery.type=single-node -v shared-content-volume:/usr/share/elasticsearch/data --name elasticsearch -d docker.elastic.co/elasticsearch/elasticsearch:6.3.0

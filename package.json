@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "description": "Open database network of links to content, associated with a set of conditions to organise their consumption and sharing.",
   "main": "src/index.js",
-  "author": "Vertz Developers",
+  "author": "Improvertz",
   "license": "MIT",
-  "repository": "https://github.com/ztrev/shared-content-initiative.git",
+  "repository": "https://github.com/forevertz/shared-content-initiative.git",
   "scripts": {
     "dev": "docker-compose -f docker-compose.dev.yml up -d && PORT=5423 nodemon src/index.js",
     "dev2": "PORT=3000 nodemon src/index.js",
