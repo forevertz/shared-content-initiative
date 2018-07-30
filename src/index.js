@@ -75,7 +75,7 @@ async function checkRequest (request, response) {
       if (!(await key.hashAndVerify(rawBody, signature))) {
         return send(response, 401, {
           success: false,
-          error: 'Header "X-Signature" does not verify (public key, BASE64(SHA256(content)))'
+          error: 'Header "X-Signature" does not verify (public key, BASE64(SIGN(SHA256(content))))'
         })
       }
     } catch (error) {
