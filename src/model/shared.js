@@ -34,6 +34,8 @@ const SharedModel = {
           height: { type: 'integer' } // in pixels
         }
       },
+      type: { type: 'keyword' },
+      category: { type: 'keyword' },
       locale: { type: 'keyword' }, // ISO 639-3 (https://iso639-3.sil.org/code_tables/639/data)
       tags: { type: 'keyword' },
       location: { type: 'geo_shape' } // GeoJSON or Well-Known Text (WKT) format
@@ -234,7 +236,7 @@ function validateMeta (meta) {
   const errors = []
   // Authorized keys
   errors.push(...validateKeys(meta, Object.keys(SharedModel.meta.properties), 'meta.'))
-  const { title, description, image, locale, tags, location } = meta
+  const { title, description, image, type, category, locale, tags, location } = meta
   // title format
   if (title !== undefined && typeof title !== 'string') {
     errors.push('Parameter "meta.title" should be a string')
@@ -245,6 +247,14 @@ function validateMeta (meta) {
   }
   // image format
   errors.push(...validateMetaImage(image))
+  // type format
+  if (type !== undefined && typeof type !== 'string') {
+    errors.push('Parameter "meta.type" should be a string')
+  }
+  // category format
+  if (category !== undefined && typeof category !== 'string') {
+    errors.push('Parameter "meta.category" should be a string')
+  }
   // locale format
   if (locale !== undefined && (typeof locale !== 'string' || !iso.isISO6393Locale(locale))) {
     const localeList = 'https://iso639-3.sil.org/code_tables/639/data'

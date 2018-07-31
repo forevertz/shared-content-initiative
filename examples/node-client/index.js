@@ -18,6 +18,8 @@ const message = {
     title: 'my title',
     description: 'my description',
     image: { url: 'http://...', width: 600, height: 400 },
+    type: 'article',
+    category: 'tech',
     locale: 'eng',
     tags: ['here', 'you', 'go'],
     location: {

@@ -35,6 +35,8 @@ test('Complete share data should be valid', () => {
         title: 'my title',
         description: 'my description',
         image: { url: 'http://...', width: 600, height: 400 },
+        type: 'article',
+        category: 'tech',
         locale: 'eng',
         tags: ['here', 'you', 'go'],
         location: {
@@ -263,6 +265,22 @@ test('meta.image should be an object', () => {
   expect(Shared.isValid({ ...shared, meta: { image: '' } })).toEqual([error])
 })
 
+test('meta.type should be a string', () => {
+  const error = 'Parameter "meta.type" should be a string'
+  expect(Shared.isValid({ ...shared, meta: { type: {} } })).toEqual([error])
+  expect(Shared.isValid({ ...shared, meta: { type: 24 } })).toEqual([error])
+  const validType = 'my type'
+  expect(Shared.isValid({ ...shared, meta: { type: validType } })).toEqual([])
+})
+
+test('meta.category should be a string', () => {
+  const error = 'Parameter "meta.category" should be a string'
+  expect(Shared.isValid({ ...shared, meta: { category: {} } })).toEqual([error])
+  expect(Shared.isValid({ ...shared, meta: { category: 24 } })).toEqual([error])
+  const validCategory = 'my category'
+  expect(Shared.isValid({ ...shared, meta: { category: validCategory } })).toEqual([])
+})
+
 test('meta.image.url should be required and should start with "http://" or "https://"', () => {
   const error = 'Parameter "meta.image.url" should start with "http://" or "https://"'
   expect(Shared.isValid({ ...shared, meta: { image: { url: false } } })).toEqual([error])
@@ -371,16 +389,10 @@ test('conditions.price.forConsumer should be a number', () => {
 
 test('conditions.price.forAgent should be a number', () => {
   const error = 'Parameter "conditions.price.forAgent" should be a number'
-  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: '' } } })).toEqual([
-    error
-  ])
-  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: '24' } } })).toEqual([
-    error
-  ])
+  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: '' } } })).toEqual([error])
+  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: '24' } } })).toEqual([error])
   const validPrice = 3
-  expect(
-    Shared.isValid({ ...shared, conditions: { price: { forAgent: validPrice } } })
-  ).toEqual([])
+  expect(Shared.isValid({ ...shared, conditions: { price: { forAgent: validPrice } } })).toEqual([])
 })
 
 test('conditions.price.currency should be a valid ISO 4217 currency', () => {
