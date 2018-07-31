@@ -9,6 +9,8 @@
   "scripts": {
     "dev": "docker-compose -f docker-compose.dev.yml up -d && PORT=5423 nodemon src/index.js",
     "dev2": "PORT=3000 nodemon src/index.js",
+    "docker:build": "docker build -f Dockerfile-single-image -t forevertz/shared-content-initiative .",
+    "docker:publish": "yarn run docker:build && docker tag forevertz/shared-content-initiative forevertz/shared-content-initiative:${TAG} && docker push forevertz/shared-content-initiative:${TAG}",
     "start": "NODE_ENV=${NODE_ENV-production} PORT=${PORT-5423} node src/index.js",
     "test": "jest"
   },
