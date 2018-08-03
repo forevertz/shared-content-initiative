@@ -15,14 +15,26 @@ function parseQueryString (queryString) {
   )
 }
 
+function validateQuery (q) {
+  if (typeof q !== 'string' || !q.startsWith('{')) {
+    throw new Error('Parameter "q" should be a stringyfied JSON')
+  }
+  if (q.includes(')*') || q.includes(')+')) {
+    throw new Error('Parameter "q" should not contain wildcard regexp grouping')
+  }
+  if (q.includes('match_phrase_prefix')) {
+    throw new Error('Parameter "q" should not contain prefix matching')
+  }
+  if (q.includes('query_string')) {
+    throw new Error('Parameter "q" should not contain Lucene queries')
+  }
+}
+
 module.exports = async (request, response) => {
   try {
-    const params = parseQueryString(request.url.split('?')[1] || '')
-    const query = params.q
-      ? params.q.startsWith('{')
-        ? JSON.parse(decodeURIComponent(params.q))
-        : { query_string: { query: decodeURIComponent(params.q) } }
-      : { match_all: {} }
+    const { q } = parseQueryString(request.url.split('?')[1] || '')
+    if (q) validateQuery(q)
+    const query = q ? JSON.parse(decodeURIComponent(q)) : { match_all: {} }
     const sharedContent = await Shared.find({ query, sort: [{ created: 'desc' }], size: 100 })
     return sharedContent
   } catch (error) {
