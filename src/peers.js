@@ -37,6 +37,8 @@ let io
 function listenToPeers (server) {
   io = ioServer(server, { serveClient: false, cookie: false })
   io.of('/sender-stream').on('connection', socket => {
+    const { address } = socket.handshake
+    console.log(`${address} connected on /sender-stream`)
     socket.on('get shared history', async ({ from }, respond) => {
       try {
         const history = (await Shared.find({
@@ -53,9 +55,17 @@ function listenToPeers (server) {
         respond([])
       }
     })
+    socket.on('disconnect', () => {
+      console.log(`${address} disconnected on /sender-stream`)
+    })
   })
   io.of('/receiver-stream').on('connection', socket => {
+    const { address } = socket.handshake
+    console.log(`${address} connected on /receiver-stream`)
     socket.on('share content', data => receiveSharedContent(data, socket.to('sender-stream')))
+    socket.on('disconnect', () => {
+      console.log(`${address} disconnected on /receiver-stream`)
+    })
   })
 }
 
@@ -70,7 +80,10 @@ async function connectToUpAndDownStreams () {
     if (randomPeer) {
       upstream.host = randomPeer
       upstream.socket = ioClient(`http://${randomPeer}/sender-stream`)
-      upstream.socket.on('disconnect', () => (upstream.socket = false))
+      upstream.socket.on('disconnect', () => {
+        console.log(`[PEERS] Disconnected ${upstream.host} on /sender-stream`)
+        upstream.socket = false
+      })
       upstream.socket.on('share content', data => {
         receiveSharedContent(data, io.of('sender-stream'))
       })
@@ -81,6 +94,7 @@ async function connectToUpAndDownStreams () {
           await receiveSharedContent(sharedContent, false, { createdTooOld: MAX_HISTORY_HOUR })
         }
       })
+      console.log(`[PEERS] Listening to ${upstream.host} /sender-stream`)
     }
   }
   if (!downstream.socket) {
@@ -90,7 +104,11 @@ async function connectToUpAndDownStreams () {
     if (randomPeer) {
       downstream.host = randomPeer
       downstream.socket = ioClient(`http://${randomPeer}/receiver-stream`)
-      downstream.socket.on('disconnect', () => (downstream.socket = false))
+      downstream.socket.on('disconnect', () => {
+        console.log(`[PEERS] Disconnected ${downstream.host} on /receiver-stream`)
+        downstream.socket = false
+      })
+      console.log(`[PEERS] Sending to ${downstream.host} /receiver-stream`)
     }
   }
 }
