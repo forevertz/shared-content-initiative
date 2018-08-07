@@ -14,7 +14,6 @@ const SharedModel = {
   created: { type: 'date', format: 'epoch_second' }, // timestamp in seconds
   externalRef: { type: 'keyword' },
   content: {
-    type: 'nested',
     properties: {
       url: { type: 'text' },
       mimeType: { type: 'keyword' }, // (https://www.iana.org/assignments/media-types/media-types.xhtml)
@@ -25,12 +24,10 @@ const SharedModel = {
     }
   },
   meta: {
-    type: 'nested',
     properties: {
       title: { type: 'text' },
       description: { type: 'text' },
       image: {
-        type: 'nested',
         properties: {
           url: { type: 'text' },
           width: { type: 'integer' }, // in pixels
@@ -45,18 +42,15 @@ const SharedModel = {
     }
   },
   conditions: {
-    type: 'nested',
     properties: {
       license: { type: 'keyword' },
       copyright: { type: 'text' },
       price: {
-        type: 'nested',
         properties: {
           forConsumer: { type: 'float' }, // can be negative to pay consumers
           forAgent: { type: 'float' }, // can be negative to pay agents
           currency: { type: 'keyword' }, // ISO 4217 (https://en.wikipedia.org/wiki/ISO_4217)
           details: {
-            type: 'nested',
             properties: {
               /*
                 (free model) used for details of the arrangement:
