@@ -2,6 +2,7 @@ const { send, json } = require('micro')
 
 const Shared = require('../model/shared')
 const { emitSharedContent } = require('../peers')
+const { dedupe } = require('../service/util')
 
 module.exports = async (request, response) => {
   const data = await json(request, { encoding: 'utf8' })
@@ -12,6 +13,9 @@ module.exports = async (request, response) => {
         ...data,
         publicKey: request.headers['x-public-key'],
         created: Math.floor(new Date().getTime() / 1000)
+      }
+      if (sharedData.meta && sharedData.meta.tags) {
+        sharedData.meta.tags = dedupe(sharedData.meta.tags)
       }
       const { _id } = await Shared.create(sharedData)
       emitSharedContent({ _id, ...sharedData })
