@@ -1,6 +1,6 @@
 {
   "name": "shared-content-initiative",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Open database network of links to content, associated with a set of conditions to organise their consumption and sharing.",
   "main": "src/index.js",
   "author": "Improvertz",
