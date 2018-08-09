@@ -16,6 +16,7 @@ services:
       - NODE_ENV=${NODE_ENV-production}
       - HOSTNAME=${HOSTNAME-localhost}
       - PORT=5423
+      - TTL_DAYS=$TTL_DAYS
       - DATABASE_HOST=elasticsearch:9200
     links:
       - elasticsearch

@@ -74,7 +74,7 @@ If you don't already have Docker, see https://docs.docker.com/install/ to instal
 1.  Run the node
 
 ```shell
-$ docker run -p 5423:5423 -e NODE_ENV=development -e discovery.type=single-node --rm -it forevertz/shared-content-initiative
+$ docker run -p 5423:5423 -e NODE_ENV=development -e TTL_DAYS=30 -e discovery.type=single-node --rm -it forevertz/shared-content-initiative
 ```
 
 2.  Open `http://localhost:5423/is-up` to see if the server is running and if the database is connected (you should see `{"success":true,"isDatabaseConnected":true}`).

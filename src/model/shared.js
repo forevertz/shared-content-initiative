@@ -1,9 +1,8 @@
 const mimeTypes = require('mime-db')
 
+const { TTL_DAYS } = require('../config')
 const { Model } = require('../service/database')
 const iso = require('../service/iso')
-
-// TODO: clean history periodically
 
 /* ========================================================================== *
  * MODEL                                                                      *
@@ -67,7 +66,7 @@ const SharedModel = {
   }
 }
 
-const Shared = new Model('shared', SharedModel)
+const Shared = new Model('shared', SharedModel, { maxDays: TTL_DAYS })
 
 Shared.findLatest = async () => {
   const [latest] = (await Shared.find({ size: 1, sort: { created: 'desc' } })).hits

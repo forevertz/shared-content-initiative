@@ -2,6 +2,7 @@ const IS_PROD = process.env.NODE_ENV === 'production'
 const PORT = parseInt(process.env.PORT) || 5423
 const HOSTNAME = process.env.HOSTNAME || 'localhost'
 const DATABASE_HOST = process.env.DATABASE_HOST || 'localhost:9200'
+const TTL_DAYS = parseInt(process.env.TTL_DAYS) || false
 const MAX_CONTENT_LENGTH = 1000
 
 if (IS_PROD && !process.env.HOSTNAME) {
@@ -13,6 +14,7 @@ const config = {
   PORT,
   HOSTNAME,
   DATABASE_HOST,
+  TTL_DAYS,
   MAX_CONTENT_LENGTH
 }
 

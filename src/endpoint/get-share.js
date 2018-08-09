@@ -15,6 +15,7 @@ function parseQueryString (queryString) {
   )
 }
 
+// TODO: improve security
 function validateQuery (q) {
   if (typeof q !== 'string' || !q.startsWith('{')) {
     throw new Error('Parameter "q" should be a stringyfied JSON')
