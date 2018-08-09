@@ -21,5 +21,12 @@ services:
     links:
       - elasticsearch
 
+  kibana:
+    image: docker.elastic.co/kibana/kibana:6.3.0
+    ports:
+      - 127.0.0.1:5601:5601
+    links:
+      - elasticsearch
+
 volumes:
   dataVolume: {}
