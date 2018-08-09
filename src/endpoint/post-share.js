@@ -12,7 +12,7 @@ module.exports = async (request, response) => {
       const sharedData = {
         ...data,
         publicKey: request.headers['x-public-key'],
-        created: Math.floor(new Date().getTime() / 1000)
+        created: Math.floor(Date.now() / 1000)
       }
       if (sharedData.meta && sharedData.meta.tags) {
         sharedData.meta.tags = dedupe(sharedData.meta.tags)

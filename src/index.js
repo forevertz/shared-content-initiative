@@ -5,6 +5,7 @@ const packageInfo = require('../package.json')
 const { PORT, MAX_CONTENT_LENGTH } = require('./config')
 const { connectPeers } = require('./peers')
 
+process.env.TZ = 'UTC'
 const { send, text } = micro
 
 const endpoints = {
